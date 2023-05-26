@@ -1,10 +1,12 @@
-from anyio import Path
 from fastapi import FastAPI, Query
+from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from models import *
 from database import *
 
 app = FastAPI()
+
+app.mount("/", StaticFiles(directory="public", html = True), name="static")
 
 @app.get("/")
 def hello():
@@ -24,5 +26,5 @@ async def get_bean_by_name(bean_name: str = Query(...)):
 
 # 이미지 파일 반환하기 ex) /data/img/abcd.jpg
 @app.get("/data/img/{filename}")
-async def get_image(filename: str = Path(...)):
+async def get_image(filename: str):
     return FileResponse(path=f"data/img/{filename}", media_type="image/jpeg")
