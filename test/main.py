@@ -26,8 +26,8 @@ async def get_bean_by_name(bean_name: str = Query(...)):
     result = await find_bean(bean_name)
     return result
 
-# 웹서버의 data/img 디렉토리에서 특정 이미지 파일을 반환하는 endpoint입니다. 예를 들어, "/data/img/abcd.jpg"로 접근하면 "abcd.jpg" 이미지를 반환합니다.
-@app.get("/data/img/{filename}")
-async def get_image(filename: str):
-    # 해당 파일을 응답으로 반환합니다.
-    return FileResponse(path=f"data/img/{filename}", media_type="image/jpeg")
+# # 웹서버의 data/img 디렉토리에서 특정 이미지 파일을 반환하는 endpoint입니다. 예를 들어, "/data/img/abcd.jpg"로 접근하면 "abcd.jpg" 이미지를 반환합니다.
+# @app.get("/data/img/{filename}")
+# async def get_image(filename: str):
+#     # 해당 파일을 응답으로 반환합니다.
+#     return FileResponse(path=f"data/img/{filename}", media_type="image/jpeg")
