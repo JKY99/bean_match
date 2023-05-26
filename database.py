@@ -26,7 +26,7 @@ async def find_bean(bean_name):
     beans = db.Beans
     bean = await beans.find_one({'name': bean_name})
     return bean
-
+print(asyncio.run(find_all_beans()))
 
 
 #---------------------------원두 정보 랜덤 생성---------------------------

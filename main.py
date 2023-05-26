@@ -6,7 +6,7 @@ from database import *
 
 app = FastAPI()
 
-app.mount("/", StaticFiles(directory="public", html = True), name="static")
+# app.mount("/", StaticFiles(directory="public", html = True), name="static")
 
 @app.get("/")
 def hello():
