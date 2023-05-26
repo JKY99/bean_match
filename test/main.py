@@ -22,7 +22,6 @@ async def get_bean_by_name(bean_name: str = Query(...)):
     result = await find_bean(bean_name)
     return result
 
-# 이미지 파일 반환하기 ex) /data/img/abcd.jpg
 @app.get("/data/img/{filename}")
-async def get_image(filename: str = Path(...)):
+async def get_image(filename: str):
     return FileResponse(path=f"data/img/{filename}", media_type="image/jpeg")
