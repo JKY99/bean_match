@@ -47,3 +47,9 @@ async def get_match_beans_by_user_id(user_id: str = Query(...)):
 @app.get("/data/img/{filename}")
 async def get_image(filename: str):
     return FileResponse(path=f"data/img/{filename}", media_type="image/jpeg")
+
+# 사용자 정보 생성하기 ex) /users/
+@app.post("/users/", response_model=User)
+async def create_user(user: User):
+    result = await create_user_(user)
+    return result.inserted_id

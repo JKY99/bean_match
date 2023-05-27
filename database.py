@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv, find_dotenv
 from datetime import datetime
@@ -40,6 +41,17 @@ async def find_user_preference(user_id):
     user_preference = await user_preferences.find_one({'user_id': user_id})
     return user_preference
 
+async def create_user_(user):
+    if await db.Users.find_one({"user_id": user.user_id}):
+        raise HTTPException(status_code=400, detail="User already registered")
+
+    user.created_at = datetime.now()  # 계정 생성 날짜 설정
+    user.updated_at = datetime.now()  # 계정 정보 수정 날짜 설정
+
+    user_obj = user.dict()
+    result = await db.Users.insert_one(user_obj)
+
+    return result.inserted_id
 
 
 def one_hot_encode(value: str, categories: List[str]) -> List[int]:
