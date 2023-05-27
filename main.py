@@ -20,7 +20,7 @@ async def get_all_beans():
     return result
 
 # 모든 음료 정보를 조회합니다.  ex) /beverages/all
-@app.get("/beverages/all", response_model=List[Bean])
+@app.get("/beverages/all", response_model=List[Beverage])
 async def get_all_beverages():
     result = await find_all_beverage()
     return result
