@@ -19,6 +19,12 @@ async def get_all_beans():
     result = await find_all_beans()
     return result
 
+# 사용자 정보를 id로 조회합니다.   ex) /users?user_id=1234
+@app.get("/user_id/id/{user_id}", response_model=User)
+async def get_user_by_id(user_id: str):
+    result = await find_user_by_id(user_id)
+    return result
+
 # 원두 정보를 name으로 조회합니다.   ex) /beans?bean_name=abcd
 @app.get("/beans/name/{bean_name}", response_model=Bean)
 async def get_bean_by_name(bean_name: str):

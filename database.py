@@ -21,6 +21,11 @@ client = AsyncIOMotorClient(uri)
 # 데이터베이스를 선택합니다.
 db = client.BeanRecommendationsDB
 
+async def find_user_by_id(user_id):
+    users = db.Users
+    user_list = await users.find_one({'user_id': user_id})
+    return user_list
+
 async def find_all_beans():
     beans = db.Beans
     bean_list = await beans.find().to_list(length=1000)
@@ -50,7 +55,7 @@ async def post_create_user(user):
 
     user_obj = user.dict()
     result = await db.Users.insert_one(user_obj)
-
+    print(result)
     return result
 
 
