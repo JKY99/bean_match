@@ -14,8 +14,8 @@ def hello():
     return {"msg":"hello"}
 
 # 모든 원두 정보를 조회합니다.  ex) /beans/all
-from bson import json_util
-@app.get("/beans/all")#, response_model=List[Bean]
+# from bson import json_util
+@app.get("/beans/all", response_model=List[Bean])#, response_model=List[Bean]
 async def get_all_beans():
     result = await find_all_beans()
     return result
