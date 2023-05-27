@@ -51,5 +51,5 @@ async def get_image(filename: str):
 # 사용자 정보 생성하기 ex) /users/
 @app.post("/users/", response_model=User)
 async def create_user(user: User):
-    result = await create_user_(user)
+    result = await post_create_user(user)
     return result.inserted_id
