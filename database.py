@@ -52,7 +52,7 @@ def cosine_similarity(a: List[int], b: List[int]) -> float:
 all_origins = ['Brazil', 'Colombia', 'Ethiopia', 'Kenya', 'Costa Rica', 'Guatemala', 'Yemen', 'India', 'Vietnam']
 all_processes = ['Natural', 'Washed', 'Honey', 'Pulped Natural', 'Wet-hulled', 'Semi-washed']
 
-async def match_beans(user_id):
+async def match_beans(user_id: str) -> List[Bean]:
     beans = db.Beans
     user_preferences = db.UserPreferences
 
@@ -84,15 +84,14 @@ async def match_beans(user_id):
         bean_vector += one_hot_encode(bean['process'], all_processes)
 
         similarity = cosine_similarity(user_vector, bean_vector)
-        result_list.append((bean['bean_id'], similarity))
+        result_list.append((bean, similarity))  # 원두 자체를 리스트에 추가
 
     result_list.sort(key=lambda x: x[1], reverse=True)
-    print(result_list)
 
-    return [bean_id for bean_id, _ in result_list]
+    return [bean for bean, _ in result_list]  # 원두 자체를 반환
 
 
-# asyncio.run(match_beans("23234"))
+# print(asyncio.run(match_beans("23234")))
 # print(asyncio.run(find_bean_by_id("34009")))
 # print(asyncio.run(find_all_beans()))
 # print(asyncio.run(find_user_preference("23234")))

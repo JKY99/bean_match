@@ -38,7 +38,7 @@ async def get_user_preference_by_user_id(user_id: str = Query(...)):
     return result
 
 # 사용자 추천 원두를 user_id로 조회합니다.   ex) /match_beans/?user_id=23234
-@app.get("/match_beans/", response_model=List[Tuple[str, float]])
+@app.get("/match_beans/", response_model=List[Bean])
 async def get_match_beans_by_user_id(user_id: str = Query(...)):
     result = await match_beans(user_id)
     return result
