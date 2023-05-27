@@ -22,7 +22,7 @@ async def get_all_beans():
 
 # from bson import json_util
 @app.get("/beans/all_", response_model={"beans":List[Bean]})
-async def get_all_beans():
+async def get_all_beans_():
     result = await find_all_beans()
     return {"beans":result}
 
