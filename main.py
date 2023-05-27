@@ -20,6 +20,12 @@ async def get_all_beans():
     result = await find_all_beans()
     return result
 
+# from bson import json_util
+@app.get("/beans/all_", response_model={"beans":List[Bean]})
+async def get_all_beans():
+    result = await find_all_beans()
+    return {"beans":result}
+
 # 사용자 정보를 id로 조회합니다.   ex) /users?user_id=1234
 @app.get("/user_id/id/{user_id}", response_model=User)
 async def get_user_by_id(user_id: str):
