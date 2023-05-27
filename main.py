@@ -1,4 +1,4 @@
-from ast import Tuple
+from typing import List, Tuple
 from fastapi import FastAPI, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
