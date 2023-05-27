@@ -18,19 +18,25 @@ async def get_all_beans():
     result = await find_all_beans()
     return result
 
-# 원두 정보를 조회합니다.   ex) /beans?bean_name=abcd
+# 원두 정보를 name으로 조회합니다.   ex) /beans?bean_name=abcd
 @app.get("/beans/", response_model=Bean)
 async def get_bean_by_name(bean_name: str = Query(...)):
-    result = await find_bean(bean_name)
+    result = await find_bean_by_name(bean_name)
     return result
 
-# 사용자 선호도 정보를 조회합니다.   ex) /user_preference/?user_id=23234
+# 원두 정보를 id로 조회합니다.   ex) /beans?bean_id=1234
+@app.get("/beans/", response_model=Bean)
+async def get_bean_by_id(bean_id: str = Query(...)):
+    result = await find_bean_by_id(bean_id)
+    return result
+
+# 사용자 선호도 정보를 user_id로 조회합니다.   ex) /user_preference/?user_id=23234
 @app.get("/user_preference/", response_model=UserPreference)
 async def get_user_preference_by_user_id(user_id: str = Query(...)):
     result = await find_user_preference(user_id)
     return result
 
-# 사용자 추천 원두를 조회합니다.   ex) /match_beans/?user_id=23234
+# 사용자 추천 원두를 user_id로 조회합니다.   ex) /match_beans/?user_id=23234
 @app.get("/match_beans/", response_model=List[Bean])
 async def get_match_beans_by_user_id(user_id: str = Query(...)):
     result = await match_beans(user_id)
