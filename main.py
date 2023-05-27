@@ -25,6 +25,12 @@ async def get_all_beverages():
     result = await find_all_beverage()
     return result
 
+# 모든 블렌딩 레시피 정보를 조회합니다.  ex) /blending_recipes/all
+@app.get("/blending_recipes/all", response_model=List[BlendingRecipe])
+async def get_all_blending_recipes():
+    result = await find_all_blending_recipe()
+    return result
+
 # # from bson import json_util
 # @app.get("/beans/all_", response_model={"beans":List[Bean]})
 # async def get_all_beans_():

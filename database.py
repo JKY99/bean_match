@@ -36,6 +36,11 @@ async def find_all_beverage():
     beverage_list = await beverages.find().to_list(length=1000)
     return beverage_list
 
+async def find_all_blending_recipe():
+    blending_recipes = db.BlendingRecipes
+    blending_recipe_list = await blending_recipes.find().to_list(length=1000)
+    return blending_recipe_list
+
 async def find_bean_by_name(bean_name):
     beans = db.Beans
     bean = await beans.find_one({'name': bean_name})
@@ -127,6 +132,48 @@ async def match_beans(user_id: str) -> List[Bean]:
 # print(asyncio.run(find_bean_by_id("34009")))
 # print(asyncio.run(find_all_beans()))
 # print(asyncio.run(find_user_preference("23234")))
+
+# #----------------------------블렌딩 레시피 랜덤 생성---------------------------
+
+# import random
+# from faker import Faker
+# from pydantic import ValidationError
+
+# fake = Faker()  # Faker 인스턴스 생성
+
+# async def create_blend(blend):
+#     blends = db.BlendingRecipes
+#     await blends.insert_one(blend.dict())
+
+
+# async def generate_blends(n):
+#     beans = await find_all_beans()
+#     for _ in range(n):
+#         selected_beans = random.sample(beans, k=random.choice([2, 3]))
+#         blend_list = [{"bean_id": bean["bean_id"], "ratio": 50 if len(selected_beans) == 2 else 40} for bean in selected_beans]
+
+#         blend_name = " / ".join([bean["bean_name"] for bean in selected_beans])
+#         description = f"This blend combines the distinct flavors of {blend_name}."
+
+#         blend = {
+#             "blend_id": fake.unique.random_number(digits=5),
+#             "blend_name": blend_name,
+#             "blend_list": blend_list,
+#             "description": description,
+#             "created_at": datetime.now(),
+#             "updated_at": datetime.now(),
+#         }
+
+#         try:
+#             blend_model = BlendingRecipe(**blend)
+#         except ValidationError as e:
+#             print(f"Error: {e}")
+#             continue
+
+#         await create_blend(blend_model)
+
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(generate_blends(100))
 
 # #--------------------------음료정보 랜덤 생성--------------------------------
 
