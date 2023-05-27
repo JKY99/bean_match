@@ -20,11 +20,11 @@ class UserPreference(BaseModel):
     preferred_beans_ids: List[str]  # 선호 원두 ID
     preferred_process: str  # 선호 가공 방식
     preferred_origin: str  # 선호 원산지
-    preferred_roast_level: str  # 선호 로스팅 정도
-    preferred_acidity_level: str  # 선호 산도 정도
-    preferred_bitterness_level: str  # 선호 쓴맛 정도
-    preferred_body_level: str  # 선호 바디 정도
-    preferred_sweetness: str  # 선호 단맛 정도
+    preferred_roast: str  # 선호 로스팅 정도
+    preferred_acidity_level: int  # 선호 산도 정도
+    preferred_bitterness_level: int  # 선호 쓴맛 정도
+    preferred_body_level: int  # 선호 바디 정도
+    preferred_sweetness_level: int  # 선호 단맛 정도
     preferred_flavor_profiles: str  # 선호 맛 프로파일
     created_at: datetime  # 선호도 정보 생성 날짜
     updated_at: datetime  # 선호도 정보 수정 날짜
@@ -45,11 +45,11 @@ class Bean(BaseModel):
     bean_img_url: str  # 원두 이미지 URL
     process: str  # 가공 방식
     origin: str  # 원산지
-    roast_level: str  # 로스팅 정도
-    acidity_level: str  # 산도 정도
-    bitterness_level: str  # 쓴맛 정도
-    body_level: str  # 바디 정도
-    sweetness: str  # 단맛 정도
+    roast: str  # 로스팅 정도
+    acidity_level: int  # 산도 정도
+    bitterness_level: int  # 쓴맛 정도
+    body_level: int  # 바디 정도
+    sweetness_level: int  # 단맛 정도
     flavor_profiles: str  # 맛 프로파일
     description: str  # 원두 설명
     created_at: datetime  # 원두 정보 생성 날짜

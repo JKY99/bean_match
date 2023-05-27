@@ -32,16 +32,16 @@ async def find_user_preference(user_id):
     user_preference = await user_preferences.find_one({'user_id': user_id})
     return user_preference
 
-async def match_beans(user_id):
-    beans = db.Beans
-    user_preferences = db.UserPreferences
+# async def match_beans(user_id):
+#     beans = db.Beans
+#     user_preferences = db.UserPreferences
 
-    bean_list = await beans.find().to_list(length=1000)
-    user_preference = await user_preferences.find_one({'user_id': user_id})
+#     bean_list = await beans.find().to_list(length=1000)
+#     user_preference = await user_preferences.find_one({'user_id': user_id})
 
-    #알고리즘
+#     #필터링 알고리즘
 
-    return bean_list
+#     return bean_list
 
 # print(asyncio.run(find_all_beans()))
 # print(asyncio.run(find_user_preference("23234")))
@@ -83,11 +83,11 @@ async def match_beans(user_id):
 #         "preferred_beans_ids": preferred_beans_ids,
 #         "preferred_process": fake.random_element(elements=processes),
 #         "preferred_origin": fake.random_element(elements=origins),
-#         "preferred_roast_level": fake.random_element(elements=roast_levels),
+#         "preferred_roast": fake.random_element(elements=roast_levels),
 #         "preferred_acidity_level": randint(1, 5),
 #         "preferred_bitterness_level": randint(1, 5),
 #         "preferred_body_level": randint(1, 5),
-#         "preferred_sweetness": randint(1, 5),
+#         "preferred_sweetness_level": randint(1, 5),
 #         "preferred_flavor_profiles": ", ".join(fake.random_elements(elements=flavor_profiles_choices, length=3, unique=True)),
 #         "created_at": datetime.now(),
 #         "updated_at": datetime.now(),
@@ -171,11 +171,11 @@ async def match_beans(user_id):
 #             "bean_img_url": fake.image_url(),
 #             "process": fake.random_element(elements=processes),  # 실제 원두 가공 방식 반영
 #             "origin": fake.random_element(elements=origins),  # 실제 원두 원산지 반영
-#             "roast_level": fake.random_element(elements=roast_levels),  # 실제 원두 로스팅 레벨 반영
-#             "acidity_level": randint(1, 5),  # 0~5 사이의 값
-#             "bitterness_level": randint(1, 5),  # 0~5 사이의 값
-#             "body_level": randint(1, 5),  # 0~5 사이의 값
-#             "sweetness": randint(1, 5),  # 0~5 사이의 값
+#             "roast": fake.random_element(elements=roast_levels),  # 실제 원두 로스팅 레벨 반영
+#             "acidity_level": randint(1, 5),  # 1~5 사이의 값
+#             "bitterness_level": randint(1, 5),  # 1~5 사이의 값
+#             "body_level": randint(1, 5),  # 1~5 사이의 값
+#             "sweetness_level": randint(1, 5),  # 1~5 사이의 값
 #             "flavor_profiles": flavor_profiles,
 #             "description": fake.text(),
 #             "created_at": datetime.now(),
