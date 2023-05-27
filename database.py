@@ -55,8 +55,18 @@ async def post_create_user(user):
 
     user_obj = user.dict()
     result = await db.Users.insert_one(user_obj)
-    print(result)
     return result
+
+async def post_create_preference(pref: UserPreference):
+    if await db.UserPreferences.find_one({"preference_id": pref.preference_id}):
+        raise HTTPException(status_code=400, detail="Preference already exists")
+
+    pref.created_at = datetime.now()  # 선호도 정보 생성 날짜 설정
+    pref.updated_at = datetime.now()  # 선호도 정보 수정 날짜 설정
+
+    pref_obj = pref.dict()
+    result = await db.UserPreferences.insert_one(pref_obj)
+    return result.inserted_id
 
 
 def one_hot_encode(value: str, categories: List[str]) -> List[int]:

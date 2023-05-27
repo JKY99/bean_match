@@ -55,7 +55,19 @@ async def get_image(filename: str):
     return FileResponse(path=f"data/img/{filename}", media_type="image/jpeg")
 
 # 사용자 정보 생성하기 ex) /users/
-@app.post("/users/", response_model=User)
+@app.post("/users/")
 async def create_user(user: User):
-    result = await post_create_user(user)
-    return result.inserted_id
+    if await post_create_user(user):
+        result = {"msg":"o"}
+    else:
+        result = {"msg":"x"}
+    return result
+
+# 사용자 정보 생성하기 ex) /preferences/
+@app.post("/preferences/")
+async def create_preference(pref: UserPreference):
+    if await post_create_preference(pref):
+        result = {"msg":"o"}
+    else:
+        result = {"msg":"x"}
+    return result
