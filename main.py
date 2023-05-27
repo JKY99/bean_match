@@ -10,7 +10,7 @@ app = FastAPI()
 
 @app.get("/")
 def hello():
-    return {"msg","hello"}
+    return {"msg":"hello"}
 
 # 모든 원두 정보를 조회합니다.  ex) /beans/all
 @app.get("/beans/all", response_model=List[Bean])
@@ -19,14 +19,14 @@ async def get_all_beans():
     return result
 
 # 원두 정보를 name으로 조회합니다.   ex) /beans?bean_name=abcd
-@app.get("/beans/", response_model=Bean)
-async def get_bean_by_name(bean_name: str = Query(...)):
+@app.get("/beans/name/{bean_name}", response_model=Bean)
+async def get_bean_by_name(bean_name: str):
     result = await find_bean_by_name(bean_name)
     return result
 
 # 원두 정보를 id로 조회합니다.   ex) /beans?bean_id=1234
-@app.get("/beans/", response_model=Bean)
-async def get_bean_by_id(bean_id: str = Query(...)):
+@app.get("/beans/id/{bean_id}", response_model=Bean)
+async def get_bean_by_id(bean_id: str):
     result = await find_bean_by_id(bean_id)
     return result
 
