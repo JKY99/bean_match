@@ -92,7 +92,7 @@ async def match_beans(user_id):
     return [bean_id for bean_id, _ in result_list]
 
 
-# asyncio.run(match_beans("23234"))
+asyncio.run(match_beans("23234"))
 # print(asyncio.run(find_bean_by_id("34009")))
 # print(asyncio.run(find_all_beans()))
 # print(asyncio.run(find_user_preference("23234")))
