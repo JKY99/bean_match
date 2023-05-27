@@ -4,7 +4,7 @@ from datetime import datetime
 
 # 사용자 정보를 위한 클래스
 class User(BaseModel):
-    user_id: str = Field(..., alias="_id")  # 사용자 ID (Primary Key)
+    user_id: str   # 사용자 ID (Primary Key)
     username: str  # 사용자 이름
     email: str  # 사용자 이메일
     age: int  # 사용자 나이
@@ -14,7 +14,7 @@ class User(BaseModel):
 
 # 사용자 선호도 정보를 위한 클래스
 class UserPreference(BaseModel):
-    preference_id: str = Field(..., alias="_id")  # 선호도 ID (Primary Key)
+    preference_id: str   # 선호도 ID (Primary Key)
     user_id: str  # 사용자 ID
     preferred_beverage_ids: List[str]  # 선호 음료 ID
     preferred_beans_ids: List[str]  # 선호 원두 ID
@@ -31,7 +31,7 @@ class UserPreference(BaseModel):
 
 # 구매 이력을 위한 클래스
 class PurchaseHistory(BaseModel):
-    purchase_id: str = Field(..., alias="_id")  # 구매 이력 ID (Primary Key)
+    purchase_id: str   # 구매 이력 ID (Primary Key)
     user_id: str  # 사용자 ID
     bean_id: str  # 원두 ID
     purchase_date: datetime  # 구매 날짜
@@ -40,7 +40,7 @@ class PurchaseHistory(BaseModel):
 
 # 원두 정보를 위한 클래스
 class Bean(BaseModel):
-    bean_id: str = Field(..., alias="_id")  # 원두 ID (Primary Key)
+    bean_id: str   # 원두 ID (Primary Key)
     bean_name: str  # 원두 이름
     bean_img_url: str  # 원두 이미지 URL
     process: str  # 가공 방식
@@ -57,7 +57,7 @@ class Bean(BaseModel):
 
 # 블렌딩 레시피를 위한 클래스
 class BlendingRecipe(BaseModel):
-    blend_id: str = Field(..., alias="_id")  # 블렌딩 레시피 ID (Primary Key)
+    blend_id: str   # 블렌딩 레시피 ID (Primary Key)
     blend_name: str  # 블렌딩 레시피 이름
     blend_list: List[dict]  # 블렌딩 레시피에 사용된 원두들의 ID리스트와 비율 
     description: str  # 블렌딩 레시피 설명 
@@ -66,7 +66,7 @@ class BlendingRecipe(BaseModel):
 
 # 음료 정보를 위한 클래스
 class Beverage(BaseModel):
-    beverage_id: str = Field(..., alias="_id")  # 음료 ID (Primary Key)
+    beverage_id: str   # 음료 ID (Primary Key)
     beverage_name: str  # 음료 이름
     description: str  # 음료 설명
     created_at: datetime  # 음료 정보 등록 날짜
@@ -74,7 +74,7 @@ class Beverage(BaseModel):
 
 # 찜한 원두를 위한 클래스
 class FavoredBeans(BaseModel):
-    favored_bean_id: str = Field(..., alias="_id")  # 원두 찜 ID (Primary Key)
+    favored_bean_id: str   # 원두 찜 ID (Primary Key)
     user_id: str  # 사용자 ID
     bean_id: str  # 원두 ID
     created_at: datetime  # 원두 찜 정보 등록 날짜
@@ -82,7 +82,7 @@ class FavoredBeans(BaseModel):
 
 # 찜한 블렌딩 레시피를 위한 클래스
 class FavoredBlendingRecipes(BaseModel):
-    favored_blend_id: str = Field(..., alias="_id")  # 블렌딩 레시피 찜 ID (Primary Key)
+    favored_blend_id: str   # 블렌딩 레시피 찜 ID (Primary Key)
     user_id: str  # 사용자 ID
     blend_id: str  # 블렌딩 레시피 ID
     created_at: datetime  # 블렌딩 레시피 찜 정보 등록 날짜
@@ -90,7 +90,7 @@ class FavoredBlendingRecipes(BaseModel):
 
 # 뉴스 페이지를 위한 클래스
 class News(BaseModel):
-    news_id: str = Field(..., alias="_id")  # 뉴스 ID (Primary Key)
+    news_id: str   # 뉴스 ID (Primary Key)
     news_title: str  # 뉴스 제목
     news_content: str  # 뉴스 내용
     news_url: str  # 뉴스 URL
@@ -99,7 +99,7 @@ class News(BaseModel):
 
 # 찜한 뉴스 페이지를 위한 클래스
 class FavoredNews(BaseModel):
-    favored_news_id: str = Field(..., alias="_id")  # 찜한 뉴스 ID (Primary Key)
+    favored_news_id: str   # 찜한 뉴스 ID (Primary Key)
     user_id: str  # 사용자 ID
     news_id: str  # 뉴스 ID
     created_at: datetime  # 뉴스 찜 정보 등록 날짜
