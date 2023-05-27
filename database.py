@@ -31,6 +31,11 @@ async def find_all_beans():
     bean_list = await beans.find().to_list(length=1000)
     return bean_list
 
+async def find_all_beverage():
+    beverages = db.Beverages
+    beverage_list = await beverages.find().to_list(length=1000)
+    return beverage_list
+
 async def find_bean_by_name(bean_name):
     beans = db.Beans
     bean = await beans.find_one({'name': bean_name})
@@ -122,6 +127,52 @@ async def match_beans(user_id: str) -> List[Bean]:
 # print(asyncio.run(find_bean_by_id("34009")))
 # print(asyncio.run(find_all_beans()))
 # print(asyncio.run(find_user_preference("23234")))
+
+# #--------------------------음료정보 랜덤 생성--------------------------------
+
+# from faker import Faker
+# from pydantic import ValidationError
+
+# fake = Faker()  # Faker 인스턴스 생성
+
+# # 음료 종류, 특성, 맛
+# beverage_types = ['Tea', 'Juice', 'Smoothie', 'Soda', 'Water']
+# beverage_characteristics = ['Iced', 'Hot', 'Sweet', 'Sour', 'Bitter']
+# beverage_flavors = ['Lemon', 'Apple', 'Berry', 'Peach', 'Cherry']
+
+# async def create_beverage(beverage):
+#     beverages = db.Beverages
+#     await beverages.insert_one(beverage.dict())
+
+# async def generate_beverages(n):
+#     for _ in range(n):
+#         beverage_type = fake.random_element(elements=beverage_types)
+#         characteristic = fake.random_element(elements=beverage_characteristics)
+#         flavor = fake.random_element(elements=beverage_flavors)
+#         beverage_name = f"{characteristic} {flavor} {beverage_type}"
+#         description = f"This is a {characteristic.lower()} {beverage_type.lower()} with a {flavor.lower()} flavor."
+
+#         beverage = {
+#             "beverage_id": fake.unique.random_number(digits=5),
+#             "beverage_name": beverage_name,
+#             "description": description,
+#             "created_at": datetime.now(),
+#             "updated_at": datetime.now(),
+#         }
+
+#         # Check if generated data fits Beverage model
+#         try:
+#             beverage_model = Beverage(**beverage)
+#         except ValidationError as e:
+#             print(f"Error: {e}")
+#             continue
+
+#         # Insert Beverage document into DB
+#         await create_beverage(beverage_model)
+
+# # Generate 100 Beverage documents
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(generate_beverages(100))
 
 # #----------------------사용자 선호도 정보 랜덤 생성-------------------------
 # from faker import Faker
