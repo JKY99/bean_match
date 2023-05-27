@@ -26,10 +26,94 @@ async def find_bean(bean_name):
     beans = db.Beans
     bean = await beans.find_one({'name': bean_name})
     return bean
+
+async def find_user_preference(user_id):
+    user_preferences = db.UserPreferences
+    user_preference = await user_preferences.find_one({'user_id': user_id})
+    return user_preference
+
+async def match_beans(user_id):
+    beans = db.Beans
+    user_preferences = db.UserPreferences
+
+    bean_list = await beans.find().to_list(length=1000)
+    user_preference = await user_preferences.find_one({'user_id': user_id})
+
+    #알고리즘
+
+    return bean_list
+
 # print(asyncio.run(find_all_beans()))
+# print(asyncio.run(find_user_preference("23234")))
 
+# #----------------------사용자 선호도 정보 랜덤 생성-------------------------
+# from faker import Faker
+# from pydantic import ValidationError
+# from random import randint
 
-#---------------------------원두 정보 랜덤 생성---------------------------
+# fake = Faker()  # Faker 인스턴스 생성
+
+# # # 원두 가공 방식 선택지
+# processes = ['Natural', 'Washed', 'Honey', 'Pulped Natural', 'Wet-hulled', 'Semi-washed']
+
+# # # 원두 로스팅 레벨 선택지
+# roast_levels = ['Light', 'Medium', 'Medium-Dark', 'Dark']
+
+# # # 원두 원산지 선택지
+# origins = ['Brazil', 'Colombia', 'Ethiopia', 'Kenya', 'Costa Rica', 'Guatemala', 'Yemen', 'India', 'Vietnam']
+
+# # # 원두 맛 프로파일 선택지
+# flavor_profiles_choices = ['Chocolatey', 'Fruity', 'Nutty', 'Floral', 'Spicy', 'Sweet', 'Winey', 'Citrus', 'Caramel', 'Buttery', 'Sour', 'Earthy']
+
+# async def get_random_beans_ids(n):
+#     beans = db.Beans
+#     sample_beans = await beans.aggregate([{"$sample": {"size": n}}]).to_list(n)
+#     return [bean['bean_id'] for bean in sample_beans]
+
+# async def create_user_preference(user):
+#     preferences = db.UserPreferences  # Preferences 컬렉션
+
+#     preferred_beverage_ids = await get_random_beans_ids(3)  # 선호 음료 ID
+#     preferred_beans_ids = await get_random_beans_ids(3)  # 선호 원두 ID
+
+#     user_preference = {
+#         "preference_id": fake.unique.random_number(digits=5),
+#         "user_id": user['user_id'],
+#         "preferred_beverage_ids": preferred_beverage_ids,
+#         "preferred_beans_ids": preferred_beans_ids,
+#         "preferred_process": fake.random_element(elements=processes),
+#         "preferred_origin": fake.random_element(elements=origins),
+#         "preferred_roast_level": fake.random_element(elements=roast_levels),
+#         "preferred_acidity_level": randint(1, 5),
+#         "preferred_bitterness_level": randint(1, 5),
+#         "preferred_body_level": randint(1, 5),
+#         "preferred_sweetness": randint(1, 5),
+#         "preferred_flavor_profiles": ", ".join(fake.random_elements(elements=flavor_profiles_choices, length=3, unique=True)),
+#         "created_at": datetime.now(),
+#         "updated_at": datetime.now(),
+#     }
+
+#     # 생성된 데이터가 UserPreference 모델에 맞는지 검사
+#     try:
+#         user_preference_model = UserPreference(**user_preference)
+#     except ValidationError as e:
+#         print(f"Error: {e}")
+#         return
+
+#     # DB에 UserPreference 문서 생성
+#     await preferences.insert_one(user_preference_model.dict())
+
+# async def generate_user_preferences():
+#     users = db.Users
+#     all_users = await users.find().to_list(1000)  # 모든 사용자 가져오기
+#     for user in all_users:
+#         await create_user_preference(user)
+
+# # UserPreference 문서 생성
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(generate_user_preferences())
+
+# # ---------------------------원두 정보 랜덤 생성---------------------------
 # from faker import Faker
 # from pydantic import ValidationError
 # from random import randint
@@ -82,16 +166,16 @@ async def find_bean(bean_name):
 #             unique_flavor_profiles.append(flavor_profiles)
 
 #         bean = {
-#             "_id": fake.unique.random_number(digits=5),
+#             "bean_id": fake.unique.random_number(digits=5),
 #             "bean_name": bean_name,
 #             "bean_img_url": fake.image_url(),
 #             "process": fake.random_element(elements=processes),  # 실제 원두 가공 방식 반영
 #             "origin": fake.random_element(elements=origins),  # 실제 원두 원산지 반영
 #             "roast_level": fake.random_element(elements=roast_levels),  # 실제 원두 로스팅 레벨 반영
-#             "acidity_level": randint(0, 5),  # 0~5 사이의 값
-#             "bitterness_level": randint(0, 5),  # 0~5 사이의 값
-#             "body_level": randint(0, 5),  # 0~5 사이의 값
-#             "sweetness": randint(0, 5),  # 0~5 사이의 값
+#             "acidity_level": randint(1, 5),  # 0~5 사이의 값
+#             "bitterness_level": randint(1, 5),  # 0~5 사이의 값
+#             "body_level": randint(1, 5),  # 0~5 사이의 값
+#             "sweetness": randint(1, 5),  # 0~5 사이의 값
 #             "flavor_profiles": flavor_profiles,
 #             "description": fake.text(),
 #             "created_at": datetime.now(),

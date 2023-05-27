@@ -24,6 +24,18 @@ async def get_bean_by_name(bean_name: str = Query(...)):
     result = await find_bean(bean_name)
     return result
 
+# 사용자 선호도 정보를 조회합니다.   ex) /user_preference/?user_id=23234
+@app.get("/user_preference/", response_model=UserPreference)
+async def get_user_preference_by_user_id(user_id: str = Query(...)):
+    result = await find_user_preference(user_id)
+    return result
+
+# 사용자 추천 원두를 조회합니다.   ex) /match_beans/?user_id=23234
+@app.get("/match_beans/", response_model=List[Bean])
+async def get_match_beans_by_user_id(user_id: str = Query(...)):
+    result = await match_beans(user_id)
+    return result
+
 # 이미지 파일 반환하기 ex) /data/img/abcd.jpg
 @app.get("/data/img/{filename}")
 async def get_image(filename: str):
