@@ -14,10 +14,10 @@ def hello():
     return {"msg":"hello"}
 
 # 모든 원두 정보를 조회합니다.  ex) /beans/all
-@app.get("/beans/all", response_model=List[Bean])
+@app.get("/beans/all")#, response_model=List[Bean]
 async def get_all_beans():
     result = await find_all_beans()
-    return result
+    return {"beans" : result}
 
 # 사용자 정보를 id로 조회합니다.   ex) /users?user_id=1234
 @app.get("/user_id/id/{user_id}", response_model=User)
