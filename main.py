@@ -2,8 +2,8 @@ from typing import List, Tuple
 from fastapi import FastAPI, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from models import *
-from database import *
+from database.models import *
+from database.database import *
 from database.favoredBean import *
 
 app = FastAPI()
@@ -117,24 +117,36 @@ async def create_preference(pref: UserPreference):
 # 찜한 원두 정보 생성 API (POST 방식)
 @app.post("/favoredBeans")
 async def create_favoredBean(favoredBean: FavoredBean):
-    result = await post_create_favoredBean(favoredBean)
-    return result
+    try:
+        result = await post_create_favoredBean(favoredBean)
+        return {"msg": "o"}
+    except:
+        raise HTTPException(status_code=400, detail="Failed to create favoredBean.")
 
 # 사용자 ID를 기준으로 찜한 원두 검색 API (GET 방식)
 @app.get("/favoredBeans/{user_id}")
 async def read_favoredBeans_by_user(user_id: str):
-    favored_beans = await get_favoredBeans_by_user(user_id)
-    return favored_beans
+    try:
+        favored_beans = await get_favoredBeans_by_user(user_id)
+        return {"msg": "o", "data": favored_beans}
+    except:
+        raise HTTPException(status_code=404, detail="Failed to get favoredBeans by user id.")
 
 # 찜한 원두 정보 수정 API (PUT 방식)
 @app.put("/favoredBeans/{favored_bean_id}")
 async def update_favoredBean(favored_bean_id: str, favoredBean: FavoredBean):
-    result = await put_update_favoredBean(favored_bean_id, favoredBean)
-    return result
+    try:
+        result = await put_update_favoredBean(favored_bean_id, favoredBean)
+        return {"msg": "o"}
+    except:
+        raise HTTPException(status_code=400, detail="Failed to update favoredBean.")
 
 # 찜한 원두 정보 삭제 API (DELETE 방식)
 @app.delete("/favoredBeans/{favored_bean_id}")
 async def remove_favoredBean(favored_bean_id: str):
-    result = await delete_favoredBean(favored_bean_id)
-    return result
+    try:
+        result = await delete_favoredBean(favored_bean_id)
+        return {"msg": "o"}
+    except:
+        raise HTTPException(status_code=404, detail="Failed to delete favoredBean.")
 #----------------------------------------찜 원두 끝----------------------------------------------------#
