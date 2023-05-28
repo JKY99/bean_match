@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv, find_dotenv
 from datetime import datetime
-from models import *
+from database.models import *
 import os
 from typing import List
 

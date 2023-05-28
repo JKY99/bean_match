@@ -1,5 +1,5 @@
 from typing import List, Tuple
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from database.models import *
@@ -111,7 +111,6 @@ async def create_preference(pref: UserPreference):
     else:
         result = {"msg":"x"}
     return result
-
 
 #----------------------------------------찜 원두 시작----------------------------------------------------#
 # 찜한 원두 정보 생성 API (POST 방식)
