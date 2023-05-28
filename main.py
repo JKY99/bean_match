@@ -149,6 +149,3 @@ async def remove_favoredBean(favored_bean_id: str):
     except:
         raise HTTPException(status_code=404, detail="Failed to delete favoredBean.")
 #----------------------------------------찜 원두 끝----------------------------------------------------#
-
-
-asyncio.run(startup_event())
