@@ -127,7 +127,7 @@ async def create_favoredBean(favoredBean: FavoredBean):
 async def read_favoredBeans_by_user(user_id: str):
     try:
         favored_beans = await get_favoredBeans_by_user(user_id)
-        return {"msg": "o", "data": favored_beans}
+        return favored_beans
     except:
         raise HTTPException(status_code=404, detail="Failed to get favoredBeans by user id.")
 
