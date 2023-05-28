@@ -14,7 +14,7 @@ load_dotenv(find_dotenv())
 password = os.environ.get("MONGODB_PWD")
 
 uri = f"mongodb+srv://admin:{1234}@recommend.wg2l4em.mongodb.net/?retryWrites=true&w=majority"
-
+    
 client = AsyncIOMotorClient(uri)
 
 
@@ -79,6 +79,7 @@ async def post_create_preference(pref: UserPreference):
     return result.inserted_id
 
 
+#--------------------------------------------------필터링 시작------------------------------------------
 def one_hot_encode(value: str, categories: List[str]) -> List[int]:
     return [1 if category == value else 0 for category in categories]
 
@@ -126,6 +127,7 @@ async def match_beans(user_id: str) -> List[Bean]:
     result_list.sort(key=lambda x: x[1], reverse=True)
 
     return [bean for bean, _ in result_list]  # 원두 자체를 반환
+#--------------------------------------------------필터링 끝------------------------------------------
 
 
 # print(asyncio.run(match_beans("23234")))

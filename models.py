@@ -73,7 +73,7 @@ class Beverage(BaseModel):
     updated_at: datetime  # 음료 정보 수정 날짜
 
 # 찜한 원두를 위한 클래스
-class FavoredBeans(BaseModel):
+class FavoredBean(BaseModel):
     favored_bean_id: str   # 원두 찜 ID (Primary Key)
     user_id: str  # 사용자 ID
     bean_id: str  # 원두 ID

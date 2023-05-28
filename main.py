@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from models import *
 from database import *
+from database.favoredBean import *
 
 app = FastAPI()
 
@@ -83,3 +84,57 @@ async def create_preference(pref: UserPreference):
     else:
         result = {"msg":"x"}
     return result
+
+# 찜 정보 생성하기 ex) /preferences/
+@app.post("/preferences/")
+async def create_preference(pref: UserPreference):
+    if await post_create_preference(pref):
+        result = {"msg":"o"}
+    else:
+        result = {"msg":"x"}
+    return result
+
+# 찜 정보 수정하기 ex) /preferences/
+@app.post("/preferences/")
+async def create_preference(pref: UserPreference):
+    if await post_create_preference(pref):
+        result = {"msg":"o"}
+    else:
+        result = {"msg":"x"}
+    return result
+
+# 찜 정보 삭제하기 ex) /preferences/
+@app.post("/preferences/")
+async def create_preference(pref: UserPreference):
+    if await post_create_preference(pref):
+        result = {"msg":"o"}
+    else:
+        result = {"msg":"x"}
+    return result
+
+
+#----------------------------------------찜 원두 시작----------------------------------------------------#
+# 찜한 원두 정보 생성 API (POST 방식)
+@app.post("/favoredBeans")
+async def create_favoredBean(favoredBean: FavoredBean):
+    result = await post_create_favoredBean(favoredBean)
+    return result
+
+# 사용자 ID를 기준으로 찜한 원두 검색 API (GET 방식)
+@app.get("/favoredBeans/{user_id}")
+async def read_favoredBeans_by_user(user_id: str):
+    favored_beans = await get_favoredBeans_by_user(user_id)
+    return favored_beans
+
+# 찜한 원두 정보 수정 API (PUT 방식)
+@app.put("/favoredBeans/{favored_bean_id}")
+async def update_favoredBean(favored_bean_id: str, favoredBean: FavoredBean):
+    result = await put_update_favoredBean(favored_bean_id, favoredBean)
+    return result
+
+# 찜한 원두 정보 삭제 API (DELETE 방식)
+@app.delete("/favoredBeans/{favored_bean_id}")
+async def remove_favoredBean(favored_bean_id: str):
+    result = await delete_favoredBean(favored_bean_id)
+    return result
+#----------------------------------------찜 원두 끝----------------------------------------------------#
