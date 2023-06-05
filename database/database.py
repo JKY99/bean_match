@@ -1,5 +1,3 @@
-from fastapi import HTTPException
-from datetime import datetime
 from typing import List
 from numpy import dot
 from numpy.linalg import norm

@@ -1,10 +1,8 @@
-from typing import List, Tuple
-from fastapi import FastAPI, Query, HTTPException
-from fastapi.staticfiles import StaticFiles
+from typing import List
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from database.models import *
 from database.database import *
-from database.favoredBean import *
 
 app = FastAPI()
 
