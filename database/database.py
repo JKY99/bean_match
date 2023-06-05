@@ -1,82 +1,12 @@
 from fastapi import HTTPException
-from motor.motor_asyncio import AsyncIOMotorClient
-from dotenv import load_dotenv, find_dotenv
 from datetime import datetime
-from database.models import *
-import os
-import asyncio
 from typing import List
 from numpy import dot
 from numpy.linalg import norm
-
-load_dotenv(find_dotenv())
-
-password = os.environ.get("MONGODB_PWD")
-
-uri = f"mongodb+srv://admin:{1234}@recommend.wg2l4em.mongodb.net/?retryWrites=true&w=majority"
-    
-client = AsyncIOMotorClient(uri)
-
-
-# 데이터베이스를 선택합니다.
-db = client.BeanRecommendationsDB
-
-async def find_user_by_id(user_id):
-    users = db.Users
-    user_list = await users.find_one({'user_id': user_id})
-    return user_list
-
-async def find_all_beans():
-    beans = db.Beans
-    bean_list = await beans.find().to_list(length=1000)
-    return bean_list
-
-async def find_all_beverage():
-    beverages = db.Beverages
-    beverage_list = await beverages.find().to_list(length=1000)
-    return beverage_list
-
-async def find_all_blending_recipe():
-    blending_recipes = db.BlendingRecipes
-    blending_recipe_list = await blending_recipes.find().to_list(length=1000)
-    return blending_recipe_list
-
-async def find_bean_by_name(bean_name):
-    beans = db.Beans
-    bean = await beans.find_one({'name': bean_name})
-    return bean
-
-async def find_bean_by_id(bean_id):
-    beans = db.Beans
-    bean = await beans.find_one({'bean_id': bean_id})
-    return bean
-
-async def find_user_preference(user_id):
-    user_preferences = db.UserPreferences
-    user_preference = await user_preferences.find_one({'user_id': user_id})
-    return user_preference
-
-async def post_create_user(user):
-    if await db.Users.find_one({"user_id": user.user_id}):
-        raise HTTPException(status_code=400, detail="User already registered")
-
-    user.created_at = datetime.now()  # 계정 생성 날짜 설정
-    user.updated_at = datetime.now()  # 계정 정보 수정 날짜 설정
-
-    user_obj = user.dict()
-    result = await db.Users.insert_one(user_obj)
-    return result
-
-async def post_create_preference(pref: UserPreference):
-    if await db.UserPreferences.find_one({"preference_id": pref.preference_id}):
-        raise HTTPException(status_code=400, detail="Preference already exists")
-
-    pref.created_at = datetime.now()  # 선호도 정보 생성 날짜 설정
-    pref.updated_at = datetime.now()  # 선호도 정보 수정 날짜 설정
-
-    pref_obj = pref.dict()
-    result = await db.UserPreferences.insert_one(pref_obj)
-    return result.inserted_id
+from database.models import *
+from database.connection import *
+from database.UserService import *
+from database.UserPreferenceService import *
 
 
 #--------------------------------------------------필터링 시작------------------------------------------
@@ -128,12 +58,69 @@ async def match_beans(user_id: str) -> List[Bean]:
 
     return [bean for bean, _ in result_list]  # 원두 자체를 반환
 #--------------------------------------------------필터링 끝------------------------------------------
-
-
 # print(asyncio.run(match_beans("23234")))
 # print(asyncio.run(find_bean_by_id("34009")))
 # print(asyncio.run(find_all_beans()))
 # print(asyncio.run(find_user_preference("23234")))
+
+
+# async def find_user_by_id(user_id):
+#     users = db.Users
+#     user_list = await users.find_one({'user_id': user_id})
+#     return user_list
+
+# async def find_all_beans():
+#     beans = db.Beans
+#     bean_list = await beans.find().to_list(length=1000)
+#     return bean_list
+
+# async def find_all_beverage():
+#     beverages = db.Beverages
+#     beverage_list = await beverages.find().to_list(length=1000)
+#     return beverage_list
+
+# async def find_all_blending_recipe():
+#     blending_recipes = db.BlendingRecipes
+#     blending_recipe_list = await blending_recipes.find().to_list(length=1000)
+#     return blending_recipe_list
+
+# async def find_bean_by_name(bean_name):
+#     beans = db.Beans
+#     bean = await beans.find_one({'name': bean_name})
+#     return bean
+
+# async def find_bean_by_id(bean_id):
+#     beans = db.Beans
+#     bean = await beans.find_one({'bean_id': bean_id})
+#     return bean
+
+# async def find_user_preference(user_id):
+#     user_preferences = db.UserPreferences
+#     user_preference = await user_preferences.find_one({'user_id': user_id})
+#     return user_preference
+
+# async def post_create_user(user):
+#     if await db.Users.find_one({"user_id": user.user_id}):
+#         raise HTTPException(status_code=400, detail="User already registered")
+
+#     user.created_at = datetime.now()  # 계정 생성 날짜 설정
+#     user.updated_at = datetime.now()  # 계정 정보 수정 날짜 설정
+
+#     user_obj = user.dict()
+#     result = await db.Users.insert_one(user_obj)
+#     return result
+
+# async def post_create_preference(pref: UserPreference):
+#     if await db.UserPreferences.find_one({"preference_id": pref.preference_id}):
+#         raise HTTPException(status_code=400, detail="Preference already exists")
+
+#     pref.created_at = datetime.now()  # 선호도 정보 생성 날짜 설정
+#     pref.updated_at = datetime.now()  # 선호도 정보 수정 날짜 설정
+
+#     pref_obj = pref.dict()
+#     result = await db.UserPreferences.insert_one(pref_obj)
+#     return result.inserted_id
+
 
 # #----------------------------블렌딩 레시피 랜덤 생성---------------------------
 
