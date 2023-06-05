@@ -7,6 +7,11 @@ from database.models import *
 from database.connection import *
 from database.UserService import *
 from database.UserPreferenceService import *
+from database.PurchaseHistoryService import *
+from database.BeanService import *
+from database.BlendingRecipeService import *
+from database.BeverageService import *
+from database.FavoredBeanService import *
 
 
 #--------------------------------------------------필터링 시작------------------------------------------

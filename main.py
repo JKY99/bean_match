@@ -82,8 +82,165 @@ async def delete_preference_by_user(user_id: str):
         raise HTTPException(status_code=404, detail="Preferences not found")
     return {"message": "Preferences have been deleted"}
 # -------------------------- UserPreference ------------------------------
-# -------------------------- UserPreference ------------------------------
-# -------------------------- UserPreference ------------------------------
+# -------------------------- PurchaseHistory ------------------------------
+@app.post("/purchase_history/", response_model=PurchaseHistory)
+async def create_purchase_history(purchase_history: PurchaseHistory):
+    return await PurchaseHistoryService.create(purchase_history)
+
+@app.get("/purchase_history/{purchase_id}", response_model=PurchaseHistory)
+async def read_purchase_history_by_id(purchase_id: str):
+    purchase_history = await PurchaseHistoryService.read_by_purchase_id(purchase_id)
+    if purchase_history is None:
+        raise HTTPException(status_code=404, detail="Purchase history not found")
+    return purchase_history
+
+@app.get("/purchase_history/user/{user_id}", response_model=List[PurchaseHistory])
+async def read_purchase_history_by_user(user_id: str):
+    purchase_histories = await PurchaseHistoryService.read_by_user_id(user_id)
+    if purchase_histories is None:
+        raise HTTPException(status_code=404, detail="Purchase histories not found")
+    return purchase_histories
+
+@app.put("/purchase_history/{purchase_id}", response_model=PurchaseHistory)
+async def update_purchase_history_by_id(purchase_id: str, purchase_history: PurchaseHistory):
+    updated_purchase_history = await PurchaseHistoryService.update_by_purchase_id(purchase_id, purchase_history)
+    if updated_purchase_history is None:
+        raise HTTPException(status_code=404, detail="Purchase history not found")
+    return updated_purchase_history
+
+@app.delete("/purchase_history/{purchase_id}")
+async def delete_purchase_history_by_id(purchase_id: str):
+    deleted = await PurchaseHistoryService.delete_by_purchase_id(purchase_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Purchase history not found")
+    return {"message": "Purchase history has been deleted"}
+
+@app.delete("/purchase_history/user/{user_id}")
+async def delete_purchase_history_by_user(user_id: str):
+    deleted = await PurchaseHistoryService.delete_by_user_id(user_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Purchase histories not found")
+    return {"message": "Purchase histories have been deleted"}
+# -------------------------- PurchaseHistory ------------------------------
+# -------------------------- Bean ------------------------------
+@app.post("/beans", response_model=Bean)
+async def create_bean(bean: Bean):
+    return await BeanService.create(bean)
+
+@app.get("/beans/{bean_id}", response_model=Bean)
+async def read_bean_by_id(bean_id: str):
+    bean = await BeanService.read(bean_id)
+    if bean is None:
+        raise HTTPException(status_code=404, detail="Bean not found")
+    return bean
+
+@app.get("/beans", response_model=List[Bean])
+async def read_beans():
+    return await BeanService.read_all()
+
+@app.put("/beans/{bean_id}", response_model=Bean)
+async def update_bean_by_id(bean_id: str, bean: Bean):
+    updated_bean = await BeanService.update(bean_id, bean)
+    if updated_bean is None:
+        raise HTTPException(status_code=404, detail="Bean not found")
+    return updated_bean
+
+@app.delete("/beans/{bean_id}")
+async def delete_bean_by_id(bean_id: str):
+    deleted = await BeanService.delete(bean_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Bean not found")
+    return {"message": "Bean has been deleted"}
+# -------------------------- Bean ------------------------------
+# -------------------------- BlendingRecipe ------------------------------
+@app.post("/blending-recipes", response_model=BlendingRecipe)
+async def create_blending_recipe(blending_recipe: BlendingRecipe):
+    return await BlendingRecipeService.create(blending_recipe)
+
+@app.get("/blending-recipes/{blend_id}", response_model=BlendingRecipe)
+async def read_blending_recipe_by_id(blend_id: str):
+    blending_recipe = await BlendingRecipeService.read(blend_id)
+    if blending_recipe is None:
+        raise HTTPException(status_code=404, detail="Blending recipe not found")
+    return blending_recipe
+
+@app.get("/blending-recipes", response_model=List[BlendingRecipe])
+async def read_blending_recipes():
+    return await BlendingRecipeService.read_all()
+
+@app.put("/blending-recipes/{blend_id}", response_model=BlendingRecipe)
+async def update_blending_recipe_by_id(blend_id: str, blending_recipe: BlendingRecipe):
+    updated_blending_recipe = await BlendingRecipeService.update(blend_id, blending_recipe)
+    if updated_blending_recipe is None:
+        raise HTTPException(status_code=404, detail="Blending recipe not found")
+    return updated_blending_recipe
+
+@app.delete("/blending-recipes/{blend_id}")
+async def delete_blending_recipe_by_id(blend_id: str):
+    deleted = await BlendingRecipeService.delete(blend_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Blending recipe not found")
+    return {"message": "Blending recipe has been deleted"}
+# -------------------------- BlendingRecipe ------------------------------
+# -------------------------- Beverage ------------------------------
+@app.post("/beverages", response_model=Beverage)
+async def create_beverage(beverage: Beverage):
+    return await BeverageService.create(beverage)
+
+@app.get("/beverages/{beverage_id}", response_model=Beverage)
+async def read_beverage_by_id(beverage_id: str):
+    beverage = await BeverageService.read(beverage_id)
+    if beverage is None:
+        raise HTTPException(status_code=404, detail="Beverage not found")
+    return beverage
+
+@app.get("/beverages", response_model=List[Beverage])
+async def read_beverages():
+    return await BeverageService.read_all()
+
+@app.put("/beverages/{beverage_id}", response_model=Beverage)
+async def update_beverage_by_id(beverage_id: str, beverage: Beverage):
+    updated_beverage = await BeverageService.update(beverage_id, beverage)
+    if updated_beverage is None:
+        raise HTTPException(status_code=404, detail="Beverage not found")
+    return updated_beverage
+
+@app.delete("/beverages/{beverage_id}")
+async def delete_beverage_by_id(beverage_id: str):
+    deleted = await BeverageService.delete(beverage_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Beverage not found")
+    return {"message": "Beverage has been deleted"}
+# -------------------------- Beverage ------------------------------
+# -------------------------- FavoredBean ------------------------------
+@app.post("/favored_bean/", response_model=FavoredBean)
+async def create_favored_bean(favored_bean: FavoredBean):
+    return await FavoredBeanService.create(favored_bean)
+
+@app.get("/favored_bean/{favored_bean_id}", response_model=FavoredBean)
+async def read_favored_bean(favored_bean_id: str):
+    return await FavoredBeanService.read(favored_bean_id)
+
+@app.get("/favored_bean/user/{user_id}", response_model=List[FavoredBean])
+async def read_favored_bean_by_user(user_id: str):
+    return await FavoredBeanService.read_by_user_id(user_id)
+
+@app.put("/favored_bean/{favored_bean_id}", response_model=FavoredBean)
+async def update_favored_bean(favored_bean_id: str, favored_bean: FavoredBean):
+    return await FavoredBeanService.update(favored_bean_id, favored_bean)
+
+@app.delete("/favored_bean/{favored_bean_id}")
+async def delete_favored_bean(favored_bean_id: str):
+    return await FavoredBeanService.delete(favored_bean_id)
+
+@app.delete("/favored_bean/user/{user_id}")
+async def delete_favored_bean_by_user(user_id: str):
+    return await FavoredBeanService.delete_by_user_id(user_id)
+# -------------------------- FavoredBean ------------------------------
+# -------------------------- BlendingRecipe ------------------------------
+# -------------------------- BlendingRecipe ------------------------------
+# -------------------------- BlendingRecipe ------------------------------
+# -------------------------- BlendingRecipe ------------------------------
 
 
 
