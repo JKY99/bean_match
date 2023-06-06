@@ -10,6 +10,9 @@ from database.BeanService import *
 from database.BlendingRecipeService import *
 from database.BeverageService import *
 from database.FavoredBeanService import *
+from database.FavoredBlendingRecipesService import *
+from database.NewsService import *
+from database.FavoredNewsService import *
 
 
 #--------------------------------------------------필터링 시작------------------------------------------
