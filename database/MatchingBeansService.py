@@ -3,6 +3,7 @@ from database.models import Bean
 from database.connection import db
 from numpy import dot
 from numpy.linalg import norm
+import numpy as np
 
 class MatchingBeansService:
     beans = db['Beans']
@@ -14,7 +15,12 @@ class MatchingBeansService:
 
     @staticmethod
     def cosine_similarity(a: List[int], b: List[int]) -> float:
-        return dot(a, b) / (norm(a) * norm(b))
+        na = norm(a)
+        nb = norm(b)
+        if na == 0 or nb == 0:  # Prevent division by zero
+            return 0
+        else:
+            return dot(a, b) / (na * nb)
 
     @classmethod
     async def match_beans(cls, user_id: str) -> List[Bean]:
@@ -49,8 +55,11 @@ class MatchingBeansService:
             bean_vector += cls.one_hot_encode(bean['process'], all_processes)
 
             similarity = cls.cosine_similarity(user_vector, bean_vector)
-            result_list.append((bean, similarity))  # 원두 자체를 리스트에 추가
+            # NaN 검사 및 원두 추가
+            if not np.isnan(similarity):
+                result_list.append((bean, similarity))  # 원두 자체를 리스트에 추가
+                print(f"Bean: {bean['bean_name']}, Similarity: {similarity:.2f}")
 
         result_list.sort(key=lambda x: x[1], reverse=True)
-
         return [bean for bean, _ in result_list]  # 원두 자체를 반환
+    
