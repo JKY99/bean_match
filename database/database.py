@@ -1,6 +1,3 @@
-from typing import List
-from numpy import dot
-from numpy.linalg import norm
 from database.models import *
 from database.connection import *
 from database.UserService import *
@@ -13,120 +10,62 @@ from database.FavoredBeanService import *
 from database.FavoredBlendingRecipesService import *
 from database.NewsService import *
 from database.FavoredNewsService import *
+from database.MatchingBeansService import *
 
 
-#--------------------------------------------------필터링 시작------------------------------------------
-def one_hot_encode(value: str, categories: List[str]) -> List[int]:
-    return [1 if category == value else 0 for category in categories]
+# #--------------------------------------------------필터링 시작------------------------------------------
+# def one_hot_encode(value: str, categories: List[str]) -> List[int]:
+#     return [1 if category == value else 0 for category in categories]
 
-# 코사인 유사도 계산 함수
-def cosine_similarity(a: List[int], b: List[int]) -> float:
-    return dot(a, b) / (norm(a) * norm(b))
+# # 코사인 유사도 계산 함수
+# def cosine_similarity(a: List[int], b: List[int]) -> float:
+#     return dot(a, b) / (norm(a) * norm(b))
 
-all_origins = ['Brazil', 'Colombia', 'Ethiopia', 'Kenya', 'Costa Rica', 'Guatemala', 'Yemen', 'India', 'Vietnam']
-all_processes = ['Natural', 'Washed', 'Honey', 'Pulped Natural', 'Wet-hulled', 'Semi-washed']
+# all_origins = ['Brazil', 'Colombia', 'Ethiopia', 'Kenya', 'Costa Rica', 'Guatemala', 'Yemen', 'India', 'Vietnam']
+# all_processes = ['Natural', 'Washed', 'Honey', 'Pulped Natural', 'Wet-hulled', 'Semi-washed']
 
-async def match_beans(user_id: str) -> List[Bean]:
-    beans = db.Beans
-    user_preferences = db.UserPreferences
+# async def match_beans(user_id: str) -> List[Bean]:
+#     beans = db.Beans
+#     user_preferences = db.UserPreferences
 
-    bean_list = await beans.find().to_list(length=1000)
-    user_preference = await user_preferences.find_one({'user_id': user_id})
+#     bean_list = await beans.find().to_list(length=1000)
+#     user_preference = await user_preferences.find_one({'user_id': user_id})
 
-    if not user_preference:
-        return None
+#     if not user_preference:
+#         return None
 
-    user_vector = [
-        user_preference['preferred_acidity_level'],
-        user_preference['preferred_bitterness_level'],
-        user_preference['preferred_body_level'],
-        user_preference['preferred_sweetness_level']
-    ]
-    user_vector += one_hot_encode(user_preference['preferred_origin'], all_origins)
-    user_vector += one_hot_encode(user_preference['preferred_process'], all_processes)
+#     user_vector = [
+#         user_preference['preferred_acidity_level'],
+#         user_preference['preferred_bitterness_level'],
+#         user_preference['preferred_body_level'],
+#         user_preference['preferred_sweetness_level']
+#     ]
+#     user_vector += one_hot_encode(user_preference['preferred_origin'], all_origins)
+#     user_vector += one_hot_encode(user_preference['preferred_process'], all_processes)
 
-    result_list = []
+#     result_list = []
 
-    for bean in bean_list:
-        bean_vector = [
-            bean['acidity_level'],
-            bean['bitterness_level'],
-            bean['body_level'],
-            bean['sweetness_level']
-        ]
-        bean_vector += one_hot_encode(bean['origin'], all_origins)
-        bean_vector += one_hot_encode(bean['process'], all_processes)
+#     for bean in bean_list:
+#         bean_vector = [
+#             bean['acidity_level'],
+#             bean['bitterness_level'],
+#             bean['body_level'],
+#             bean['sweetness_level']
+#         ]
+#         bean_vector += one_hot_encode(bean['origin'], all_origins)
+#         bean_vector += one_hot_encode(bean['process'], all_processes)
 
-        similarity = cosine_similarity(user_vector, bean_vector)
-        result_list.append((bean, similarity))  # 원두 자체를 리스트에 추가
+#         similarity = cosine_similarity(user_vector, bean_vector)
+#         result_list.append((bean, similarity))  # 원두 자체를 리스트에 추가
 
-    result_list.sort(key=lambda x: x[1], reverse=True)
+#     result_list.sort(key=lambda x: x[1], reverse=True)
 
-    return [bean for bean, _ in result_list]  # 원두 자체를 반환
-#--------------------------------------------------필터링 끝------------------------------------------
+#     return [bean for bean, _ in result_list]  # 원두 자체를 반환
+# #--------------------------------------------------필터링 끝------------------------------------------
 # print(asyncio.run(match_beans("23234")))
 # print(asyncio.run(find_bean_by_id("34009")))
 # print(asyncio.run(find_all_beans()))
 # print(asyncio.run(find_user_preference("23234")))
-
-
-# async def find_user_by_id(user_id):
-#     users = db.Users
-#     user_list = await users.find_one({'user_id': user_id})
-#     return user_list
-
-# async def find_all_beans():
-#     beans = db.Beans
-#     bean_list = await beans.find().to_list(length=1000)
-#     return bean_list
-
-# async def find_all_beverage():
-#     beverages = db.Beverages
-#     beverage_list = await beverages.find().to_list(length=1000)
-#     return beverage_list
-
-# async def find_all_blending_recipe():
-#     blending_recipes = db.BlendingRecipes
-#     blending_recipe_list = await blending_recipes.find().to_list(length=1000)
-#     return blending_recipe_list
-
-# async def find_bean_by_name(bean_name):
-#     beans = db.Beans
-#     bean = await beans.find_one({'name': bean_name})
-#     return bean
-
-# async def find_bean_by_id(bean_id):
-#     beans = db.Beans
-#     bean = await beans.find_one({'bean_id': bean_id})
-#     return bean
-
-# async def find_user_preference(user_id):
-#     user_preferences = db.UserPreferences
-#     user_preference = await user_preferences.find_one({'user_id': user_id})
-#     return user_preference
-
-# async def post_create_user(user):
-#     if await db.Users.find_one({"user_id": user.user_id}):
-#         raise HTTPException(status_code=400, detail="User already registered")
-
-#     user.created_at = datetime.now()  # 계정 생성 날짜 설정
-#     user.updated_at = datetime.now()  # 계정 정보 수정 날짜 설정
-
-#     user_obj = user.dict()
-#     result = await db.Users.insert_one(user_obj)
-#     return result
-
-# async def post_create_preference(pref: UserPreference):
-#     if await db.UserPreferences.find_one({"preference_id": pref.preference_id}):
-#         raise HTTPException(status_code=400, detail="Preference already exists")
-
-#     pref.created_at = datetime.now()  # 선호도 정보 생성 날짜 설정
-#     pref.updated_at = datetime.now()  # 선호도 정보 수정 날짜 설정
-
-#     pref_obj = pref.dict()
-#     result = await db.UserPreferences.insert_one(pref_obj)
-#     return result.inserted_id
-
 
 # #----------------------------블렌딩 레시피 랜덤 생성---------------------------
 

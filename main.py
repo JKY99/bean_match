@@ -13,6 +13,14 @@ app = FastAPI()
 async def get_image(filename: str):
     return FileResponse(path=f"data/img/{filename}", media_type="image/jpeg")
 
+# -------------------------- MatchingBeansService ------------------------------
+@app.get("/match_beans/{user_id}", response_model=List[Bean])
+async def match_beans(user_id: str):
+    matched_beans = await MatchingBeansService.match_beans(user_id)
+    if not matched_beans:
+        raise HTTPException(status_code=404, detail="User preferences not found or no beans matched")
+    return matched_beans
+# -------------------------- MatchingBeansService ------------------------------
 # -------------------------- User ------------------------------
 @app.post("/users", response_model=User)
 async def create_user(user: User) -> User:
@@ -341,3 +349,10 @@ async def delete_favored_news_by_user_id(user_id: str):
     await FavoredNewsService.delete_by_user_id(user_id)
     return {"message": "FavoredNews deleted successfully for the user"}
 # -------------------------- FavoredNews ------------------------------
+
+
+
+# 이미지 파일 반환하기 ex) /data/img/abcd.jpg
+@app.get("/data/img/{filename}")
+async def get_image(filename: str):
+    return FileResponse(path=f"data/img/{filename}", media_type="image/jpeg")
